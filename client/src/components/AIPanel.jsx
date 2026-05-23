@@ -7,7 +7,7 @@ function AIPanel({ code, language, autoPrompt, clearAutoPrompt }) {
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
 
- useEffect(() => {
+  useEffect(() => {
     if (autoPrompt && autoPrompt.trim() !== '') {
       const prompt = autoPrompt
       clearAutoPrompt()
@@ -23,7 +23,7 @@ function AIPanel({ code, language, autoPrompt, clearAutoPrompt }) {
     setLoading(true)
 
     try {
-      const response = await fetch('http://localhost:5000/api/chat', {
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userMsg, code, language })
@@ -31,7 +31,7 @@ function AIPanel({ code, language, autoPrompt, clearAutoPrompt }) {
       const data = await response.json()
       setMessages(prev => [...prev, { role: 'ai', text: data.reply }])
     } catch {
-      setMessages(prev => [...prev, { role: 'ai', text: 'Error reaching AI. Make sure the server is running.' }])
+      setMessages(prev => [...prev, { role: 'ai', text: 'Error reaching AI. Please try again.' }])
     }
     setLoading(false)
   }
